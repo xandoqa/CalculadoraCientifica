@@ -1,0 +1,57 @@
+package calculadoracientifica;
+
+public class OperacoesFisica {
+    
+    // Constantes físicas
+    private static final double GRAVIDADE = 9.81; // m/s²
+    private static final double CONSTANTE_GRAVITACIONAL = 6.67430e-11; // m³/kg/s²
+    
+    public double calcularVelocidadeMedia(double distancia, double tempo) {
+        if (tempo == 0) {
+            throw new ArithmeticException("Tempo não pode ser zero!");
+        }
+        return distancia / tempo;
+    }
+    
+    public double calcularAceleracao(double velocidadeInicial, double velocidadeFinal, double tempo) {
+        if (tempo == 0) {
+            throw new ArithmeticException("Tempo não pode ser zero!");
+        }
+        return (velocidadeFinal - velocidadeInicial) / tempo;
+    }
+    
+    public double calcularForca(double massa, double aceleracao) {
+        return massa * aceleracao;
+    }
+    
+    public double calcularEnergiaCinetica(double massa, double velocidade) {
+        return 0.5 * massa * velocidade * velocidade;
+    }
+    
+    public double calcularEnergiaPotencial(double massa, double altura) {
+        return massa * GRAVIDADE * altura;
+    }
+    
+    public double calcularTrabalho(double forca, double distancia, double anguloGraus) {
+        double anguloRadianos = Math.toRadians(anguloGraus);
+        return forca * distancia * Math.cos(anguloRadianos);
+    }
+    
+    public double calcularPotencia(double trabalho, double tempo) {
+        if (tempo == 0) {
+            throw new ArithmeticException("Tempo não pode ser zero!");
+        }
+        return trabalho / tempo;
+    }
+    
+    public double calcularTensao(double resistencia, double corrente) {
+        return resistencia * corrente; // Lei de Ohm: V = R * I
+    }
+    
+    public double calcularForcaGravitacional(double massa1, double massa2, double distancia) {
+        if (distancia == 0) {
+            throw new ArithmeticException("Distância não pode ser zero!");
+        }
+        return CONSTANTE_GRAVITACIONAL * massa1 * massa2 / (distancia * distancia);
+    }
+}

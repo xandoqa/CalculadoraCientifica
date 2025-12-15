@@ -1,0 +1,335 @@
+package calculadoracientifica;
+
+import java.util.Scanner;
+
+public class CalculadoraCientifica {
+    private OperacoesBasicas operacoesBasicas;
+    private OperacoesCientificas operacoesCientificas;
+    private OperacoesFisica operacoesFisica;
+    private OperacoesAlgebraLinear operacoesAlgebraLinear;
+    private HistoricoCalculos historico;
+    private Scanner scanner;
+    
+    public CalculadoraCientifica() {
+        operacoesBasicas = new OperacoesBasicas();
+        operacoesCientificas = new OperacoesCientificas();
+        operacoesFisica = new OperacoesFisica();
+        operacoesAlgebraLinear = new OperacoesAlgebraLinear();
+        historico = new HistoricoCalculos();
+        scanner = new Scanner(System.in);
+    }
+    
+    public void iniciar() {
+        System.out.println("=======================================");
+        System.out.println("   CALCULADORA CIENTÍFICA - UCB 2023   ");
+        System.out.println("=======================================");
+        
+        int opcao;
+        do {
+            exibirMenuPrincipal();
+            opcao = lerInteiro("Digite sua opção: ");
+            
+            switch (opcao) {
+                case 1:
+                    menuOperacoesBasicas();
+                    break;
+                case 2:
+                    menuOperacoesCientificas();
+                    break;
+                case 3:
+                    menuOperacoesFisica();
+                    break;
+                case 4:
+                    menuAlgebraLinear();
+                    break;
+                case 5:
+                    historico.exibirHistorico();
+                    break;
+                case 6:
+                    System.out.println("\nObrigado por usar a Calculadora Científica!");
+                    break;
+                default:
+                    System.out.println("\nOpção inválida! Tente novamente.");
+            }
+        } while (opcao != 6);
+    }
+    
+    private void exibirMenuPrincipal() {
+        System.out.println("\n========== MENU PRINCIPAL ==========");
+        System.out.println("1. Operações Básicas");
+        System.out.println("2. Operações Científicas (Cálculo)");
+        System.out.println("3. Operações de Física");
+        System.out.println("4. Álgebra Linear");
+        System.out.println("5. Ver Histórico de Cálculos");
+        System.out.println("6. Sair");
+        System.out.println("====================================");
+    }
+    
+    private void menuOperacoesBasicas() {
+        System.out.println("\n----- OPERAÇÕES BÁSICAS -----");
+        System.out.println("1. Adição");
+        System.out.println("2. Subtração");
+        System.out.println("3. Multiplicação");
+        System.out.println("4. Divisão");
+        System.out.println("5. Potência");
+        System.out.println("6. Raiz Quadrada");
+        System.out.println("7. Voltar");
+        
+        int opcao = lerInteiro("Escolha a operação: ");
+        
+        if (opcao >= 1 && opcao <= 6) {
+            double num1 = 0, num2 = 0;
+            
+            if (opcao != 6) { // Raiz quadrada só precisa de um número
+                num1 = lerDouble("Digite o primeiro número: ");
+                
+                if (opcao != 6) { // Raiz quadrada só precisa de um número
+                    num2 = lerDouble("Digite o segundo número: ");
+                }
+            } else {
+                num1 = lerDouble("Digite o número: ");
+            }
+            
+            double resultado = 0;
+            String operacao = "";
+            
+            switch (opcao) {
+                case 1:
+                    resultado = operacoesBasicas.adicao(num1, num2);
+                    operacao = num1 + " + " + num2;
+                    break;
+                case 2:
+                    resultado = operacoesBasicas.subtracao(num1, num2);
+                    operacao = num1 + " - " + num2;
+                    break;
+                case 3:
+                    resultado = operacoesBasicas.multiplicacao(num1, num2);
+                    operacao = num1 + " × " + num2;
+                    break;
+                case 4:
+                    if (num2 != 0) {
+                        resultado = operacoesBasicas.divisao(num1, num2);
+                        operacao = num1 + " ÷ " + num2;
+                    } else {
+                        System.out.println("Erro: Divisão por zero!");
+                        return;
+                    }
+                    break;
+                case 5:
+                    resultado = operacoesBasicas.potencia(num1, num2);
+                    operacao = num1 + "^" + num2;
+                    break;
+                case 6:
+                    resultado = operacoesBasicas.raizQuadrada(num1);
+                    operacao = "√" + num1;
+                    break;
+            }
+            
+            System.out.printf("\nResultado: %s = %.4f\n", operacao, resultado);
+            historico.adicionarCalculo(operacao + " = " + resultado);
+        }
+    }
+    
+    private void menuOperacoesCientificas() {
+        System.out.println("\n----- OPERAÇÕES CIENTÍFICAS -----");
+        System.out.println("1. Seno (sin)");
+        System.out.println("2. Cosseno (cos)");
+        System.out.println("3. Tangente (tan)");
+        System.out.println("4. Logaritmo Natural (ln)");
+        System.out.println("5. Logaritmo Base 10 (log)");
+        System.out.println("6. Exponencial (e^x)");
+        System.out.println("7. Fatorial");
+        System.out.println("8. Derivada Numérica");
+        System.out.println("9. Integral Numérica");
+        System.out.println("10. Voltar");
+        
+        int opcao = lerInteiro("Escolha a operação: ");
+        
+        if (opcao >= 1 && opcao <= 9) {
+            double valor = lerDouble("Digite o valor: ");
+            double resultado = 0;
+            String operacao = "";
+            
+            switch (opcao) {
+                case 1:
+                    resultado = operacoesCientificas.seno(valor);
+                    operacao = "sin(" + valor + ")";
+                    break;
+                case 2:
+                    resultado = operacoesCientificas.cosseno(valor);
+                    operacao = "cos(" + valor + ")";
+                    break;
+                case 3:
+                    resultado = operacoesCientificas.tangente(valor);
+                    operacao = "tan(" + valor + ")";
+                    break;
+                case 4:
+                    if (valor > 0) {
+                        resultado = operacoesCientificas.logaritmoNatural(valor);
+                        operacao = "ln(" + valor + ")";
+                    } else {
+                        System.out.println("Erro: ln(x) não definido para x <= 0");
+                        return;
+                    }
+                    break;
+                case 5:
+                    if (valor > 0) {
+                        resultado = operacoesCientificas.logaritmoBase10(valor);
+                        operacao = "log10(" + valor + ")";
+                    } else {
+                        System.out.println("Erro: log(x) não definido para x <= 0");
+                        return;
+                    }
+                    break;
+                case 6:
+                    resultado = operacoesCientificas.exponencial(valor);
+                    operacao = "e^" + valor;
+                    break;
+                case 7:
+                    if (valor >= 0 && valor == Math.floor(valor)) {
+                        resultado = operacoesCientificas.fatorial((int)valor);
+                        operacao = (int)valor + "!";
+                    } else {
+                        System.out.println("Erro: Fatorial só definido para inteiros não negativos");
+                        return;
+                    }
+                    break;
+                case 8:
+                    resultado = operacoesCientificas.derivadaNumerica(valor);
+                    operacao = "f'(" + valor + ") para f(x)=x^2";
+                    break;
+                case 9:
+                    double a = lerDouble("Digite o limite inferior da integral: ");
+                    double b = lerDouble("Digite o limite superior da integral: ");
+                    resultado = operacoesCientificas.integralNumerica(a, b);
+                    operacao = "∫(" + a + " to " + b + ") x^2 dx";
+                    valor = (a + b) / 2; // Para histórico
+                    break;
+            }
+            
+            System.out.printf("\nResultado: %s = %.6f\n", operacao, resultado);
+            historico.adicionarCalculo(operacao + " = " + resultado);
+        }
+    }
+    
+    private void menuOperacoesFisica() {
+        System.out.println("\n----- OPERAÇÕES DE FÍSICA -----");
+        System.out.println("1. Calcular Velocidade Média");
+        System.out.println("2. Calcular Aceleração");
+        System.out.println("3. Calcular Força (2ª Lei de Newton)");
+        System.out.println("4. Calcular Energia Cinética");
+        System.out.println("5. Calcular Energia Potencial Gravitacional");
+        System.out.println("6. Calcular Trabalho");
+        System.out.println("7. Calcular Potência");
+        System.out.println("8. Lei de Ohm (Tensão)");
+        System.out.println("9. Voltar");
+        
+        int opcao = lerInteiro("Escolha a operação: ");
+        
+        double resultado = 0;
+        String operacao = "";
+        
+        switch (opcao) {
+            case 1:
+                double distancia = lerDouble("Digite a distância percorrida (m): ");
+                double tempo = lerDouble("Digite o tempo gasto (s): ");
+                resultado = operacoesFisica.calcularVelocidadeMedia(distancia, tempo);
+                operacao = "Velocidade média: " + distancia + "m / " + tempo + "s";
+                System.out.printf("\nVelocidade média = %.2f m/s\n", resultado);
+                break;
+            case 2:
+                double vInicial = lerDouble("Digite a velocidade inicial (m/s): ");
+                double vFinal = lerDouble("Digite a velocidade final (m/s): ");
+                tempo = lerDouble("Digite o tempo (s): ");
+                resultado = operacoesFisica.calcularAceleracao(vInicial, vFinal, tempo);
+                operacao = "Aceleração: (" + vFinal + " - " + vInicial + ") / " + tempo;
+                System.out.printf("\nAceleração = %.2f m/s²\n", resultado);
+                break;
+            case 3:
+                double massa = lerDouble("Digite a massa (kg): ");
+                double aceleracao = lerDouble("Digite a aceleração (m/s²): ");
+                resultado = operacoesFisica.calcularForca(massa, aceleracao);
+                operacao = "Força: " + massa + "kg × " + aceleracao + "m/s²";
+                System.out.printf("\nForça = %.2f N\n", resultado);
+                break;
+            case 4:
+                massa = lerDouble("Digite a massa (kg): ");
+                double velocidade = lerDouble("Digite a velocidade (m/s): ");
+                resultado = operacoesFisica.calcularEnergiaCinetica(massa, velocidade);
+                operacao = "Energia cinética: 0.5 × " + massa + " × " + velocidade + "²";
+                System.out.printf("\nEnergia cinética = %.2f J\n", resultado);
+                break;
+            case 5:
+                massa = lerDouble("Digite a massa (kg): ");
+                double altura = lerDouble("Digite a altura (m): ");
+                resultado = operacoesFisica.calcularEnergiaPotencial(massa, altura);
+                operacao = "Energia potencial: " + massa + " × 9.81 × " + altura;
+                System.out.printf("\nEnergia potencial gravitacional = %.2f J\n", resultado);
+                break;
+            case 6:
+                double forca = lerDouble("Digite a força aplicada (N): ");
+                distancia = lerDouble("Digite a distância (m): ");
+                double angulo = lerDouble("Digite o ângulo entre força e deslocamento (graus): ");
+                resultado = operacoesFisica.calcularTrabalho(forca, distancia, angulo);
+                operacao = "Trabalho: " + forca + " × " + distancia + " × cos(" + angulo + "°)";
+                System.out.printf("\nTrabalho = %.2f J\n", resultado);
+                break;
+            case 7:
+                double trabalho = lerDouble("Digite o trabalho realizado (J): ");
+                tempo = lerDouble("Digite o tempo (s): ");
+                resultado = operacoesFisica.calcularPotencia(trabalho, tempo);
+                operacao = "Potência: " + trabalho + "J / " + tempo + "s";
+                System.out.printf("\nPotência = %.2f W\n", resultado);
+                break;
+            case 8:
+                double resistencia = lerDouble("Digite a resistência (Ω): ");
+                double corrente = lerDouble("Digite a corrente (A): ");
+                resultado = operacoesFisica.calcularTensao(resistencia, corrente);
+                operacao = "Tensão: " + resistencia + "Ω × " + corrente + "A";
+                System.out.printf("\nTensão = %.2f V\n", resultado);
+                break;
+            case 9:
+                return;
+            default:
+                System.out.println("Opção inválida!");
+                return;
+        }
+        
+        historico.adicionarCalculo(operacao + " = " + resultado);
+    }
+    
+    private void menuAlgebraLinear() {
+        System.out.println("\n----- ÁLGEBRA LINEAR -----");
+        System.out.println("1. Somar Matrizes");
+        System.out.println("2. Multiplicar Matrizes");
+        System.out.println("3. Calcular Determinante (2x2 ou 3x3)");
+        System.out.println("4. Multiplicar Matriz por Escalar");
+        System.out.println("5. Transpor Matriz");
+        System.out.println("6. Resolver Sistema Linear (2 equações)");
+        System.out.println("7. Voltar");
+        
+        int opcao = lerInteiro("Escolha a operação: ");
+        
+        operacoesAlgebraLinear.menuAlgebraLinear(opcao, historico);
+    }
+    
+    private double lerDouble(String mensagem) {
+        System.out.print(mensagem);
+        while (!scanner.hasNextDouble()) {
+            System.out.println("Valor inválido! Digite um número.");
+            scanner.next();
+            System.out.print(mensagem);
+        }
+        return scanner.nextDouble();
+    }
+    
+    private int lerInteiro(String mensagem) {
+        System.out.print(mensagem);
+        while (!scanner.hasNextInt()) {
+            System.out.println("Valor inválido! Digite um número inteiro.");
+            scanner.next();
+            System.out.print(mensagem);
+        }
+        return scanner.nextInt();
+    }
+}
